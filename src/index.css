@@ -1,0 +1,65 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+@theme {
+  --font-sans: "Bodoni Moda", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-serif: "Bodoni Moda", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  
+  --color-lavender: #A99DF8;
+  --color-lavender-dark: #5e52a7;
+  --color-seafoam: #BBE5EB;
+  --color-seafoam-dark: #3d656a;
+  --color-coral: #F4B9AA;
+  --color-coral-dark: #805347;
+  --color-ivory: #F3ECE0;
+  --color-ivory-light: #fdfbf7;
+  --color-midnight: #1B283A;
+
+  /* Override stone colors for legibility as requested */
+  --color-stone-300: #646464;
+  --color-stone-400: #646464;
+}
+
+html {
+  font-size: 14px;
+}
+
+body {
+  @apply bg-ivory-light text-midnight antialiased selection:bg-lavender/20 selection:text-lavender-dark font-serif;
+  font-size: 1rem; /* 14px */
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+/* Custom utility for soft lavender backgrounds */
+.bg-lavender-soft {
+  background-color: rgba(169, 157, 248, 0.1);
+}
+
+.border-lavender-soft {
+  border-color: #e1e1e7;
+}
+
+.border-standard {
+  border-color: #e1e1e7;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

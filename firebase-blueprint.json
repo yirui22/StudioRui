@@ -1,0 +1,98 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Stores user information and admin status.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "isAdmin": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "rescheduleCredit": { "type": "integer", "description": "Number of credits for rescheduling." }
+      },
+      "required": ["email"]
+    },
+    "Class": {
+      "title": "Pilates Class",
+      "description": "Represents a scheduled Pilates session.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "type": { "type": "string", "enum": ["group", "private"] },
+        "startTime": { "type": "string", "format": "date-time" },
+        "maxSize": { "type": "integer" },
+        "currentParticipants": { "type": "integer" },
+        "price": { "type": "number" },
+        "description": { "type": "string" },
+        "location": { "type": "string" }
+      },
+      "required": ["title", "type", "startTime", "maxSize", "currentParticipants", "price", "location"]
+    },
+    "ClassTemplate": {
+      "title": "Class Template",
+      "description": "Reusable template for creating classes.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "type": { "type": "string", "enum": ["group", "private"] },
+        "maxSize": { "type": "integer" },
+        "price": { "type": "number" },
+        "description": { "type": "string" },
+        "location": { "type": "string" }
+      },
+      "required": ["title", "type", "maxSize", "price", "location"]
+    },
+    "Booking": {
+      "title": "Class Booking",
+      "description": "Records a user's reservation for a class.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string", "format": "email" },
+        "classId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "paid", "cancelled"] },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "classTitle": { "type": "string" },
+        "classStartTime": { "type": "string", "format": "date-time" },
+        "receiptFlagged": { "type": "boolean" },
+        "receiptAnalysis": { "type": "string" },
+        "receiptBase64": { "type": "string" },
+        "cancelledAt": { "type": "string", "format": "date-time" },
+        "refundEligible": { "type": "boolean" }
+      },
+      "required": ["userId", "classId", "status", "timestamp"]
+    },
+    "MailingList": {
+      "title": "Mailing List Subscriber",
+      "description": "Stores email addresses for the newsletter.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "subscribedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "subscribedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles indexed by Auth UID."
+    },
+    "/classes/{classId}": {
+      "schema": "Class",
+      "description": "Available Pilates classes."
+    },
+    "/templates/{templateId}": {
+      "schema": "ClassTemplate",
+      "description": "Reusable class templates."
+    },
+    "/bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "User bookings for classes."
+    },
+    "/mailing_list/{subscriberId}": {
+      "schema": "MailingList",
+      "description": "Newsletter subscribers."
+    }
+  }
+}
