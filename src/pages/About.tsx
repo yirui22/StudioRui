@@ -42,8 +42,8 @@ export default function About() {
           >
             <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl shadow-lavender/20">
               <img 
-                src="/ruiprofilephoto.jpg" 
-                alt="Rui's Pilates Studio" 
+                src="public/ruiprofilephoto.jpg" 
+                alt="public/IMG_3202.HEIC" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
