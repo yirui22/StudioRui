@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import profilePic from '../assets/ruiprofilephoto.jpg';
 
 export default function About() {
   React.useEffect(() => {
@@ -42,8 +43,8 @@ export default function About() {
           >
             <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl shadow-lavender/20">
               <img 
-                src="public/ruiprofilephoto.jpg" 
-                alt="public/IMG_3202.HEIC" 
+                src={profilePic} 
+                alt="Rui - Pilates Instructor" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />

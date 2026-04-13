@@ -4,6 +4,7 @@ import { useAuth } from '../App';
 import { auth } from '../firebase';
 import { LogOut, User, ShieldCheck, Calendar, Menu, Bell, X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import logoUrl from '../assets/logo.svg';
 
 export default function Navbar() {
   const { user, profile } = useAuth();
@@ -27,7 +28,7 @@ export default function Navbar() {
         </button>
 
         <Link to="/" className="flex items-center gap-2">
-          <img src="/logo.svg" alt="STUDIO RUI Logo" className="h-10 w-auto" />
+          <img src={logoUrl} alt="STUDIO RUI Logo" className="h-10 w-auto" />
         </Link>
 
         <div className="w-6" /> {/* Spacer to balance the menu button */}
