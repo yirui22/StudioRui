@@ -348,7 +348,7 @@ export default function Auth() {
               className="relative bg-white rounded-[2.5rem] p-10 max-w-md w-full shadow-2xl space-y-8"
             >
               <div className="text-center space-y-2">
-                <h3 className="text-3xl font-serif italic text-midnight">Reset Password</h3>
+                <h3 className="text-3xl font-serif text-midnight">Reset Password</h3>
                 <p className="text-stone-500">Choose how you want to receive your reset link.</p>
               </div>
 

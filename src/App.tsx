@@ -86,9 +86,9 @@ export default function App() {
   return (
     <AuthContext.Provider value={{ user, profile, loading }}>
       <Router>
-        <div className="min-h-screen bg-ivory font-serif text-midnight">
+        <div className="min-h-screen bg-ivory-light font-serif text-midnight">
           <Navbar />
-          <main className="container mx-auto px-4 pt-20 pb-8">
+          <main>
             <ErrorBoundary>
               <Routes>
                 <Route path="/" element={<Home />} />
