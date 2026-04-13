@@ -30,7 +30,7 @@ export default function About() {
                 I'm a small group pilates instructor with a passion for movement that feels as good as it looks. I love combining pilates with gym for a dynamic blend to work on strength and mobility.
               </p>
               <p>
-                I completed my Reformer and Small Apparatus training with Pilates ITC, a Pilates Association Australia recognised training provider, and now I'm registered with AusActive.
+                I completed my Reformer and Small Apparatus training with Pilates ITC, a Pilates Association Australia Recognised Training Provider.
               </p>
             </div>
           </motion.div>
@@ -42,7 +42,7 @@ export default function About() {
           >
             <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl shadow-lavender/20">
               <img 
-                src="/profilephoto.jpg" 
+                src="/ruiprofilephoto.jpg" 
                 alt="Rui's Pilates Studio" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
