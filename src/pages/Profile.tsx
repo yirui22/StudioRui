@@ -9,6 +9,7 @@ import { Calendar, Clock, CheckCircle, Download, XCircle, History, User as UserI
 import { motion, AnimatePresence } from 'motion/react';
 import { generateICS, downloadICS } from '../utils/ics';
 import { handleFirestoreError, OperationType, getTimestampDate } from '../utils/firestore';
+import CountryCodeSelect from '../components/CountryCodeSelect';
 
 export default function Profile() {
   const { user, profile } = useAuth();
@@ -21,23 +22,39 @@ export default function Profile() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editName, setEditName] = useState('');
   const [editPhone, setEditPhone] = useState('');
+  const [editCountryCode, setEditCountryCode] = useState('+1');
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
 
   useEffect(() => {
     if (profile) {
       setEditName(profile.name || '');
-      setEditPhone(profile.phone || '');
+      if (profile.phone) {
+        const match = profile.phone.match(/^(\+\d+)(.*)$/);
+        if (match) {
+          setEditCountryCode(match[1]);
+          setEditPhone(match[2]);
+        } else {
+          setEditPhone(profile.phone);
+        }
+      }
     }
   }, [profile]);
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
+
+    if (editPhone.replace(/\D/g, '').length < 8) {
+      alert('Please enter a valid phone number.');
+      return;
+    }
+
     setIsUpdatingProfile(true);
+    const fullPhone = `${editCountryCode}${editPhone.replace(/\D/g, '')}`;
     try {
       await updateDoc(doc(db, 'users', user.uid), {
         name: editName,
-        phone: editPhone
+        phone: fullPhone
       });
       setShowEditModal(false);
       // Reload to refresh the profile state in App.tsx
@@ -473,14 +490,17 @@ export default function Profile() {
 
                 <div className="space-y-2">
                   <label className="text-base font-bold uppercase tracking-widest text-[#646464] ml-4">Phone Number</label>
-                  <input 
-                    type="tel"
-                    value={editPhone}
-                    onChange={(e) => setEditPhone(e.target.value)}
-                    className="w-full px-6 py-4 bg-ivory border-none rounded-2xl focus:ring-2 focus:ring-lavender transition-all"
-                    placeholder="+61 000 000 000"
-                    required
-                  />
+                  <div className="flex gap-2">
+                    <CountryCodeSelect value={editCountryCode} onChange={setEditCountryCode} />
+                    <input 
+                      type="tel"
+                      value={editPhone}
+                      onChange={(e) => setEditPhone(e.target.value)}
+                      className="flex-1 px-6 py-4 bg-ivory border-none rounded-2xl focus:ring-2 focus:ring-lavender transition-all"
+                      placeholder="400 000 000"
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">

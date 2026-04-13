@@ -84,6 +84,14 @@ export default function Navbar() {
                   Pricing
                 </Link>
                 
+                <Link 
+                  to="/about" 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block text-[22px] font-serif italic text-midnight hover:text-lavender transition-colors font-normal"
+                >
+                  About
+                </Link>
+
                 {user ? (
                   <>
                     <Link 
@@ -115,14 +123,6 @@ export default function Navbar() {
                     Sign In
                   </Link>
                 )}
-
-                <Link 
-                  to="/about" 
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block text-[22px] font-serif italic text-midnight hover:text-lavender transition-colors font-normal"
-                >
-                  About
-                </Link>
               </nav>
 
               {user && (

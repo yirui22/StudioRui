@@ -341,9 +341,6 @@ const ClassCard: React.FC<{ cls: PilatesClass; isBooked?: boolean }> = ({ cls, i
           <Clock size={18} className="text-lavender" />
           <div className="flex items-center gap-2">
             <span className="text-base font-bold">{format(cls.startTime.toDate(), 'h:mm a')}</span>
-            <span className="bg-lavender-soft/50 w-6 h-6 flex items-center justify-center rounded-md text-base font-bold text-lavender-dark">
-              M
-            </span>
           </div>
         </div>
 

@@ -26,6 +26,7 @@ import {
 import { generateICS, downloadICS } from '../utils/ics';
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { Upload, FileText, X } from 'lucide-react';
+import CountryCodeSelect from '../components/CountryCodeSelect';
 
 export default function Checkout() {
   const { classId } = useParams();
@@ -41,9 +42,10 @@ export default function Checkout() {
   const [name, setName] = useState(profile?.name || '');
   const [email, setEmail] = useState(user?.email || '');
   const [phone, setPhone] = useState(profile?.phone || '');
+  const [countryCode, setCountryCode] = useState('+1');
   const [isFirstTime, setIsFirstTime] = useState(false);
   const [injuries, setInjuries] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'paypal' | 'bank' | 'credit'>('stripe');
+  const [paymentMethod, setPaymentMethod] = useState<'bank' | 'credit'>('bank');
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -119,7 +121,16 @@ export default function Checkout() {
   useEffect(() => {
     if (profile) {
       setName(profile.name || '');
-      setPhone(profile.phone || '');
+      // Try to parse country code from existing phone
+      if (profile.phone) {
+        const match = profile.phone.match(/^(\+\d+)(.*)$/);
+        if (match) {
+          setCountryCode(match[1]);
+          setPhone(match[2]);
+        } else {
+          setPhone(profile.phone);
+        }
+      }
       if (profile.rescheduleCredit && profile.rescheduleCredit > 0) {
         setPaymentMethod('credit');
       }
@@ -131,13 +142,26 @@ export default function Checkout() {
 
   const handlePayment = async () => {
     if (!classItem || !user) return;
-    if (!name || !phone || !email) {
-      alert('Please fill in your name, email, and phone number.');
+    
+    // Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    if (phone.replace(/\D/g, '').length < 8) {
+      alert('Please enter a valid phone number.');
+      return;
+    }
+
+    if (!name) {
+      alert('Please fill in your name.');
       return;
     }
     
     if (paymentMethod === 'bank' && !receiptFile) {
-      alert('Please upload a screenshot of your bank transfer or Beem receipt.');
+      alert('Please upload a screenshot of your transfer receipt.');
       return;
     }
     
@@ -156,13 +180,15 @@ export default function Checkout() {
       setIsAnalyzing(false);
     }
 
+    const fullPhone = `${countryCode}${phone.replace(/\D/g, '')}`;
+
     try {
       if (!profile?.name || !profile?.phone) {
         try {
           await setDoc(doc(db, 'users', user.uid), {
             ...profile,
             name,
-            phone,
+            phone: fullPhone,
           }, { merge: true });
         } catch (e) {
           handleFirestoreError(e, OperationType.WRITE, `users/${user.uid}`);
@@ -173,9 +199,9 @@ export default function Checkout() {
         userId: user.uid,
         userEmail: email,
         userName: name,
-        userPhone: phone,
+        userPhone: fullPhone,
         classId: classItem.id,
-        status: 'paid',
+        status: paymentMethod === 'bank' ? 'pending' : 'paid',
         paymentMethod,
         timestamp: Timestamp.now(),
         classTitle: classItem.title,
@@ -188,15 +214,29 @@ export default function Checkout() {
         receiptAnalysis,
         receiptBase64: base64Receipt
       };
-
-      // If bank transfer, status is pending
-      if (paymentMethod === 'bank') {
-        bookingData.status = 'pending';
-      }
       
       let bookingRef;
       try {
         bookingRef = await addDoc(collection(db, 'bookings'), bookingData);
+        
+        // Notify admin of new booking
+        try {
+          await fetch('/api/admin/notify-booking', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userEmail: email,
+              userName: name,
+              classTitle: classItem.title,
+              bookingId: bookingRef.id,
+              price: bookingData.price,
+              paymentMethod: bookingData.paymentMethod,
+              startTime: format(classItem.startTime.toDate(), 'EEEE, MMM do, h:mm a')
+            })
+          });
+        } catch (e) {
+          console.error("Failed to notify admin of booking:", e);
+        }
       } catch (e) {
         handleFirestoreError(e, OperationType.CREATE, 'bookings');
       }
@@ -341,14 +381,19 @@ export default function Checkout() {
                     </div>
                     <div className="relative">
                       <label className="text-base font-bold text-midnight/40 uppercase tracking-widest mb-1 block">Phone Number</label>
-                      <input 
-                        required
-                        value={phone}
-                        onChange={e => setPhone(e.target.value)}
-                        className="w-full bg-transparent border-b border-[#e1e1e7] focus:border-lavender focus:ring-0 transition-all py-2 placeholder:text-stone-300 text-base" 
-                        placeholder="+61(0)405413510" 
-                        type="tel"
-                      />
+                      <div className="flex gap-2">
+                        <CountryCodeSelect value={countryCode} onChange={setCountryCode} />
+                        <div className="relative flex-1">
+                          <input 
+                            required
+                            value={phone}
+                            onChange={e => setPhone(e.target.value)}
+                            className="w-full bg-transparent border-b border-[#e1e1e7] focus:border-lavender focus:ring-0 transition-all py-2 placeholder:text-stone-300 text-base" 
+                            placeholder="400 000 000" 
+                            type="tel"
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div className="relative">
@@ -401,48 +446,6 @@ export default function Checkout() {
                     </label>
                   )}
 
-                  <label className={`flex items-center p-4 rounded-xl border transition-all cursor-pointer group ${paymentMethod === 'stripe' ? 'bg-white border-lavender shadow-sm' : 'bg-white/50 border-[#e1e1e7] hover:border-lavender/40'}`}>
-                    <input 
-                      type="radio" 
-                      name="payment" 
-                      checked={paymentMethod === 'stripe'}
-                      onChange={() => setPaymentMethod('stripe')}
-                      className="text-lavender focus:ring-lavender h-6 w-6" 
-                    />
-                    <div className="ml-4 flex-1 flex items-center justify-between">
-                      <span className="font-medium text-midnight text-base">Credit or Debit Card</span>
-                      <CreditCard size={20} className="text-stone-400" />
-                    </div>
-                  </label>
-                  
-                  {paymentMethod === 'stripe' && (
-                    <motion.div 
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      className="p-4 bg-lavender-soft/30 rounded-xl space-y-4 overflow-hidden"
-                    >
-                      <input className="w-full bg-transparent border-b border-[#e1e1e7] focus:border-lavender focus:ring-0 transition-all py-2 placeholder:text-stone-300 text-base" placeholder="Card Number" type="text" />
-                      <div className="grid grid-cols-2 gap-4">
-                        <input className="w-full bg-transparent border-b border-[#e1e1e7] focus:border-lavender focus:ring-0 transition-all py-2 placeholder:text-stone-300 text-base" placeholder="MM/YY" type="text" />
-                        <input className="w-full bg-transparent border-b border-[#e1e1e7] focus:border-lavender focus:ring-0 transition-all py-2 placeholder:text-stone-300 text-base" placeholder="CVC" type="text" />
-                      </div>
-                    </motion.div>
-                  )}
-
-                  <label className={`flex items-center p-4 rounded-xl border transition-all cursor-pointer group ${paymentMethod === 'paypal' ? 'bg-white border-lavender shadow-sm' : 'bg-white/50 border-[#e1e1e7] hover:border-lavender/40'}`}>
-                    <input 
-                      type="radio" 
-                      name="payment" 
-                      checked={paymentMethod === 'paypal'}
-                      onChange={() => setPaymentMethod('paypal')}
-                      className="text-lavender focus:ring-lavender h-6 w-6" 
-                    />
-                    <div className="ml-4 flex-1 flex items-center justify-between">
-                      <span className="font-medium text-midnight text-base">PayPal</span>
-                      <Wallet size={20} className="text-stone-400" />
-                    </div>
-                  </label>
-
                   <label className={`flex items-center p-4 rounded-xl border transition-all cursor-pointer group ${paymentMethod === 'bank' ? 'bg-white border-lavender shadow-sm' : 'bg-white/50 border-[#e1e1e7] hover:border-lavender/40'}`}>
                     <input 
                       type="radio" 
@@ -452,7 +455,7 @@ export default function Checkout() {
                       className="text-lavender focus:ring-lavender h-6 w-6" 
                     />
                     <div className="ml-4 flex-1 flex items-center justify-between">
-                      <span className="font-medium text-midnight text-base">Bank Transfer / Beem</span>
+                      <span className="font-medium text-midnight text-base">Bank Transfer / Beem / PayID</span>
                       <div className="w-6 h-6 rounded-full bg-lavender-soft flex items-center justify-center text-lavender font-bold text-base">B</div>
                     </div>
                   </label>
@@ -465,13 +468,29 @@ export default function Checkout() {
                     >
                       <div className="flex items-center gap-2 text-coral font-medium">
                         <AlertCircle size={18} />
-                        Bank Transfer / Beem Details
+                        Payment Details
                       </div>
                       <p className="text-base text-stone-600 leading-relaxed">
                         Please transfer the total amount to complete your booking. Your spot will be confirmed once payment is received.
                       </p>
-                      <div className="pt-2 space-y-1">
-                        <p className="text-base font-bold text-midnight">Beem Username: <span className="underline">@ruiyi2</span></p>
+                      <div className="pt-2 space-y-3">
+                        <div className="p-4 bg-white/50 rounded-xl space-y-2">
+                          <p className="text-base font-bold text-midnight uppercase tracking-widest text-xs opacity-60">Bank Transfer</p>
+                          <p className="text-base text-midnight">Account Name: <span className="font-bold">Rui Yi</span></p>
+                          <p className="text-base text-midnight">BSB: <span className="font-bold">732-010</span></p>
+                          <p className="text-base text-midnight">Acct: <span className="font-bold">724671</span></p>
+                        </div>
+                        
+                        <div className="p-4 bg-white/50 rounded-xl space-y-2">
+                          <p className="text-base font-bold text-midnight uppercase tracking-widest text-xs opacity-60">PayID</p>
+                          <p className="text-base text-midnight">PayID: <span className="font-bold">0405413510</span></p>
+                        </div>
+
+                        <div className="p-4 bg-white/50 rounded-xl space-y-2">
+                          <p className="text-base font-bold text-midnight uppercase tracking-widest text-xs opacity-60">Beem</p>
+                          <p className="text-base text-midnight">Beem: <span className="font-bold">@ruiyi2</span></p>
+                        </div>
+                        
                         <p className="text-base text-stone-400 italic">Please include your name and class date in the reference.</p>
                       </div>
 
@@ -517,36 +536,14 @@ export default function Checkout() {
               </section>
 
               <div className="pt-6">
-                {paymentMethod === 'paypal' ? (
-                  <PayPalScriptProvider options={{ clientId: "test", currency: "AUD" }}>
-                    <PayPalButtons 
-                      style={{ layout: "vertical", shape: "pill" }}
-                      createOrder={(data, actions) => {
-                        return actions.order.create({
-                          intent: "CAPTURE",
-                          purchase_units: [{
-                            amount: {
-                              currency_code: "AUD",
-                              value: classItem.price.toString()
-                            }
-                          }]
-                        });
-                      }}
-                      onApprove={async (data, actions) => {
-                        await handlePayment();
-                      }}
-                    />
-                  </PayPalScriptProvider>
-                ) : (
-                  <button 
-                    onClick={handlePayment}
-                    disabled={processing || isAnalyzing}
-                    className="w-full bg-lavender-dark text-white py-5 rounded-full font-bold text-lg hover:scale-[1.02] transition-transform shadow-lg shadow-lavender/20 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isAnalyzing ? 'Analyzing Receipt...' : processing ? 'Processing...' : (paymentMethod === 'bank' ? 'Confirm Booking' : `Complete Booking — $${classItem.price.toFixed(2)}`)}
-                    <Lock size={20} />
-                  </button>
-                )}
+                <button 
+                  onClick={handlePayment}
+                  disabled={processing || isAnalyzing}
+                  className="w-full bg-lavender-dark text-white py-5 rounded-full font-bold text-lg hover:scale-[1.02] transition-transform shadow-lg shadow-lavender/20 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isAnalyzing ? 'Analyzing Receipt...' : processing ? 'Processing...' : (paymentMethod === 'bank' ? 'Confirm Booking' : `Complete Booking — $${classItem.price.toFixed(2)}`)}
+                  <Lock size={20} />
+                </button>
                 <p className="text-center text-base text-midnight/40 mt-4 uppercase tracking-widest">Your payment is secured with industry-standard encryption.</p>
               </div>
             </div>
