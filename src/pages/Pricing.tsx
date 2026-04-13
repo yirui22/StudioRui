@@ -40,10 +40,10 @@ export default function Pricing() {
             className="space-y-4"
           >
             <span className="text-lavender-dark font-bold tracking-[0.2em] uppercase text-base block">Investment</span>
-            <h1 className="text-6xl md:text-8xl font-serif italic tracking-tighter text-midnight leading-tight">
+            <h1 className="text-6xl md:text-8xl font-serif text-midnight leading-tight">
               Pricing
             </h1>
-            <p className="text-xl text-midnight/60 font-serif italic max-w-2xl mx-auto">
+            <p className="text-xl text-midnight/60 font-serif max-w-2xl mx-auto">
               Choose the experience that best aligns with your journey.
             </p>
           </motion.div>
@@ -64,7 +64,7 @@ export default function Pricing() {
               }`}
             >
               <div className="mb-8">
-                <h3 className={`text-2xl font-serif italic mb-2 ${plan.highlight ? 'text-lavender' : 'text-midnight'}`}>
+                <h3 className={`text-2xl font-serif mb-2 ${plan.highlight ? 'text-lavender' : 'text-midnight'}`}>
                   {plan.title}
                 </h3>
                 <div className="flex items-baseline gap-1">
@@ -122,7 +122,7 @@ export default function Pricing() {
         <section className="bg-ivory p-12 md:p-24 rounded-[4rem] border border-[#e1e1e7] relative overflow-hidden text-center">
           <div className="absolute top-0 right-0 w-96 h-96 bg-lavender/10 rounded-full blur-[120px]" />
           <div className="relative z-10 max-w-3xl mx-auto space-y-8">
-            <h2 className="text-4xl md:text-6xl font-serif italic text-midnight leading-tight">
+            <h2 className="text-4xl md:text-6xl font-serif text-midnight leading-tight">
               Ready to start your journey?
             </h2>
             <p className="text-xl text-midnight/60 leading-relaxed">

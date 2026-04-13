@@ -18,7 +18,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex items-center justify-between px-6 h-16 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
+      <header className="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-xl flex items-center justify-between px-6 h-16 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
         <button 
           onClick={() => setIsMenuOpen(true)}
           className="hover:opacity-80 transition-opacity text-lavender-dark"
@@ -49,7 +49,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 left-0 h-full w-[280px] bg-ivory-light z-[70] shadow-2xl p-8 flex flex-col"
+              className="fixed top-0 left-0 h-full w-[280px] bg-white z-[70] shadow-2xl p-8 flex flex-col"
             >
               <div className="flex justify-between items-center mb-6">
                 <div className="flex items-start gap-2 text-lavender-dark">
@@ -71,7 +71,7 @@ export default function Navbar() {
                 <Link 
                   to="/" 
                   onClick={() => setIsMenuOpen(false)}
-                  className="block text-[22px] font-serif italic text-midnight hover:text-lavender transition-colors"
+                  className="block text-[22px] font-serif text-midnight hover:text-lavender transition-colors"
                 >
                   Book a Class
                 </Link>
@@ -79,7 +79,7 @@ export default function Navbar() {
                 <Link 
                   to="/pricing" 
                   onClick={() => setIsMenuOpen(false)}
-                  className="block text-[22px] font-serif italic text-midnight hover:text-lavender transition-colors font-normal"
+                  className="block text-[22px] font-serif text-midnight hover:text-lavender transition-colors font-normal"
                 >
                   Pricing
                 </Link>
@@ -87,7 +87,7 @@ export default function Navbar() {
                 <Link 
                   to="/about" 
                   onClick={() => setIsMenuOpen(false)}
-                  className="block text-[22px] font-serif italic text-midnight hover:text-lavender transition-colors font-normal"
+                  className="block text-[22px] font-serif text-midnight hover:text-lavender transition-colors font-normal"
                 >
                   About
                 </Link>

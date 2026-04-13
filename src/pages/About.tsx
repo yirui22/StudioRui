@@ -19,10 +19,10 @@ export default function About() {
             <div className="inline-block px-4 py-1.5 bg-lavender-soft/30 rounded-full text-lavender-dark font-bold text-base uppercase tracking-[0.2em]">
               Meet your instructor
             </div>
-            <h1 className="text-6xl md:text-8xl font-serif italic tracking-tighter text-midnight leading-[0.9]">
+            <h1 className="text-6xl md:text-8xl font-serif text-midnight leading-[0.9]">
               Hi, I'm <span className="text-lavender">Rui</span>
             </h1>
-            <p className="text-2xl md:text-3xl font-serif italic text-midnight/60 leading-tight">
+            <p className="text-2xl md:text-3xl font-serif text-midnight/60 leading-tight">
               Personalised pilates for every body.
             </p>
             <div className="space-y-6 text-midnight/70 text-lg leading-relaxed max-w-lg">
@@ -57,7 +57,7 @@ export default function About() {
         <section className="bg-midnight text-white p-12 md:p-24 relative overflow-hidden mb-32">
           <div className="absolute top-0 right-0 w-96 h-96 bg-lavender/10 rounded-full blur-[120px]" />
           <div className="relative z-10 max-w-3xl">
-            <h2 className="text-4xl md:text-6xl font-serif italic mb-12 leading-tight">
+            <h2 className="text-4xl md:text-6xl font-serif mb-12 leading-tight">
               If you've been curious about Pilates but weren't sure where to start...
             </h2>
             <p className="text-xl md:text-2xl font-light text-white/80 leading-relaxed mb-12">
@@ -81,31 +81,31 @@ export default function About() {
               <div className="inline-block px-4 py-1.5 bg-lavender-soft/30 rounded-full text-lavender-dark font-bold text-base uppercase tracking-[0.2em] mb-6">
                 Policy
               </div>
-              <h2 className="text-5xl font-serif italic text-midnight leading-tight">
+              <h2 className="text-5xl font-serif text-midnight leading-tight">
                 Cancellation & Rescheduling
               </h2>
             </div>
             <div className="lg:col-span-8 grid sm:grid-cols-2 gap-12">
               <div className="space-y-4">
-                <h3 className="text-2xl font-serif italic text-lavender-dark">Full Cancellation & Refund</h3>
+                <h3 className="text-2xl font-serif text-lavender-dark">Full Cancellation & Refund</h3>
                 <p className="text-midnight/60 leading-relaxed">
                   Cancellations made more than 24 hours before the scheduled class start time are eligible for a full refund to the original payment method.
                 </p>
               </div>
               <div className="space-y-4">
-                <h3 className="text-2xl font-serif italic text-lavender-dark">Reschedule Only (under 24 hours)</h3>
+                <h3 className="text-2xl font-serif text-lavender-dark">Reschedule Only (under 24 hours)</h3>
                 <p className="text-midnight/60 leading-relaxed">
                   If you need to cancel within 24 hours of your class, full refunds are not available. However, you may reschedule your booking to another available class at no extra charge, provided the request is made more than 12 hours before the class start time.
                 </p>
               </div>
               <div className="space-y-4">
-                <h3 className="text-2xl font-serif italic text-lavender-dark">No Changes Within 12 Hours</h3>
+                <h3 className="text-2xl font-serif text-lavender-dark">No Changes Within 12 Hours</h3>
                 <p className="text-midnight/60 leading-relaxed">
                   Cancellations and reschedules are not accepted within 12 hours of the class start time. The full class cost will be forfeited.
                 </p>
               </div>
               <div className="space-y-4">
-                <h3 className="text-2xl font-serif italic text-lavender-dark">No-Shows</h3>
+                <h3 className="text-2xl font-serif text-lavender-dark">No-Shows</h3>
                 <p className="text-midnight/60 leading-relaxed">
                   Failure to attend a booked class without prior cancellation or reschedule will result in the full class cost being forfeited.
                 </p>

@@ -202,7 +202,7 @@ export default function Profile() {
   return (
     <div className="max-w-5xl mx-auto space-y-16 pt-40 pb-24 px-6">
       <section className="space-y-3">
-        <h1 className="text-5xl font-serif text-midnight italic tracking-tight">My Profile</h1>
+        <h1 className="text-5xl font-serif text-midnight tracking-tight">My Profile</h1>
         <p className="text-lg text-stone-500 font-medium">Manage your bookings and account details.</p>
       </section>
 
@@ -224,7 +224,7 @@ export default function Profile() {
                     <Pencil size={14} />
                   </button>
                 </div>
-                <p className="text-2xl font-serif text-midnight italic break-words leading-tight">{profile?.name || 'Guest'}</p>
+                <p className="text-2xl font-serif text-midnight break-words leading-tight">{profile?.name || 'Guest'}</p>
                 {profile?.phone && (
                   <p className="text-base text-stone-400 font-medium">{profile.phone}</p>
                 )}
@@ -236,7 +236,7 @@ export default function Profile() {
                 <div className="flex items-center justify-between group">
                   <div className="space-y-0.5">
                     <p className="text-base uppercase font-bold text-stone-400 tracking-widest group-hover:text-lavender transition-colors">Upcoming</p>
-                    <p className="text-3xl font-serif text-midnight italic">{upcomingBookings.length}</p>
+                    <p className="text-3xl font-serif text-midnight">{upcomingBookings.length}</p>
                   </div>
                   <div className="w-10 h-10 rounded-full bg-ivory flex items-center justify-center text-stone-300">
                     <Calendar size={18} />
@@ -247,7 +247,7 @@ export default function Profile() {
                 <div className="flex items-center justify-between group">
                   <div className="space-y-0.5">
                     <p className="text-base uppercase font-bold text-stone-400 tracking-widest group-hover:text-seafoam-dark transition-colors">Completed</p>
-                    <p className="text-3xl font-serif text-midnight italic">{completedBookings.length}</p>
+                    <p className="text-3xl font-serif text-midnight">{completedBookings.length}</p>
                   </div>
                   <div className="w-10 h-10 rounded-full bg-ivory flex items-center justify-center text-stone-300">
                     <History size={18} />
@@ -259,7 +259,7 @@ export default function Profile() {
                   <div className="flex items-center justify-between group">
                     <div className="space-y-0.5">
                       <p className="text-base uppercase font-bold text-lavender tracking-widest group-hover:text-lavender-dark transition-colors">Credits</p>
-                      <p className="text-3xl font-serif text-midnight italic">{profile.rescheduleCredit}</p>
+                      <p className="text-3xl font-serif text-midnight">{profile.rescheduleCredit}</p>
                     </div>
                     <div className="w-10 h-10 rounded-full bg-lavender-soft flex items-center justify-center text-lavender">
                       <RefreshCw size={18} />
@@ -272,7 +272,7 @@ export default function Profile() {
 
           <div className="bg-lavender-dark p-8 rounded-[2rem] text-white space-y-4 relative overflow-hidden group">
             <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
-            <h4 className="text-xl font-serif italic relative z-10">Need help?</h4>
+            <h4 className="text-xl font-serif relative z-10">Need help?</h4>
             <div className="space-y-2 relative z-10">
               <p className="text-white/70 text-base leading-relaxed">Our team is here to assist with your practice. Contact us for any scheduling questions.</p>
               <p className="text-white font-bold text-base">To change your class, please send us an email</p>
@@ -289,7 +289,7 @@ export default function Profile() {
         <div className="lg:col-span-8 space-y-20">
           <div className="space-y-10">
             <div className="flex items-center justify-between border-b-2 border-[#e1e1e7] pb-6">
-              <h2 className="text-3xl font-serif text-midnight flex items-center gap-3 italic">
+              <h2 className="text-3xl font-serif text-midnight flex items-center gap-3">
                 Upcoming Sessions
               </h2>
               <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-lavender/5 shadow-sm">
@@ -320,7 +320,7 @@ export default function Profile() {
                       <div className="bg-white p-8 rounded-[2rem] flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                         <div className="space-y-6 flex-grow">
                           <div className="space-y-2">
-                            <h3 className="text-3xl font-serif text-midnight italic leading-tight">{booking.classTitle}</h3>
+                            <h3 className="text-3xl font-serif text-midnight leading-tight">{booking.classTitle}</h3>
                             <div className="flex items-center gap-3 text-stone-400">
                               <MapPin size={20} className="text-lavender/60" />
                               <span className="text-base font-medium tracking-wide">Main Atelier — Studio B</span>
@@ -388,7 +388,7 @@ export default function Profile() {
                   <Calendar size={40} />
                 </div>
                 <div className="space-y-2">
-                  <p className="text-xl font-serif italic text-stone-400">Your schedule is clear. Ready to move?</p>
+                  <p className="text-xl font-serif text-stone-400">Your schedule is clear. Ready to move?</p>
                   <Link to="/" className="inline-block text-lavender-dark font-bold text-base uppercase tracking-[0.2em] hover:tracking-[0.3em] transition-all">Book a class</Link>
                 </div>
               </div>
@@ -397,7 +397,7 @@ export default function Profile() {
 
           <div className="space-y-10">
             <div className="flex items-center justify-between border-b-2 border-[#e1e1e7] pb-6">
-              <h2 className="text-3xl font-serif text-midnight flex items-center gap-3 italic">
+              <h2 className="text-3xl font-serif text-midnight flex items-center gap-3">
                 History
               </h2>
             </div>
@@ -422,7 +422,7 @@ export default function Profile() {
                         {booking.status === 'cancelled' ? <XCircle size={24} /> : <History size={24} />}
                       </div>
                       <div className="space-y-1.5">
-                        <h3 className="text-xl font-serif text-midnight italic leading-tight">{booking.classTitle}</h3>
+                        <h3 className="text-xl font-serif text-midnight leading-tight">{booking.classTitle}</h3>
                         <div className="flex items-center gap-3 text-base text-stone-400 font-bold uppercase tracking-widest">
                           <span>{format(getTimestampDate(booking.classStartTime), 'MMM d, yyyy')}</span>
                           <span className="w-1 h-1 bg-stone-200 rounded-full" />
@@ -446,7 +446,7 @@ export default function Profile() {
               </div>
             ) : (
               <div className="text-center py-16 bg-white/30 rounded-[2rem] border border-dashed border-[#e1e1e7]">
-                <p className="text-stone-400 italic font-serif text-lg">No past sessions found.</p>
+                <p className="text-stone-400 font-serif text-lg">No past sessions found.</p>
               </div>
             )}
           </div>
@@ -471,7 +471,7 @@ export default function Profile() {
               className="relative bg-white rounded-[2.5rem] p-10 max-w-md w-full shadow-2xl space-y-8"
             >
               <div className="text-center space-y-2">
-                <h3 className="text-3xl font-serif italic text-midnight">Edit Profile</h3>
+                <h3 className="text-3xl font-serif text-midnight">Edit Profile</h3>
                 <p className="text-[#646464]">Update your personal details below.</p>
               </div>
 
@@ -514,7 +514,7 @@ export default function Profile() {
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-base font-bold text-seafoam-dark bg-seafoam/10 px-2 py-1 rounded-md">Verified</span>
                   </div>
-                  <p className="text-base text-[#646464] ml-4 italic">Email is managed via authentication.</p>
+                  <p className="text-base text-[#646464] ml-4">Email is managed via authentication.</p>
                 </div>
 
                 <div className="flex flex-col gap-3 pt-4">
@@ -561,7 +561,7 @@ export default function Profile() {
               </div>
               
               <div className="text-center space-y-4">
-                <h3 className="text-3xl font-serif italic text-midnight">
+                <h3 className="text-3xl font-serif text-midnight">
                   {isRescheduling ? 'Reschedule Booking?' : 'Cancel Booking?'}
                 </h3>
                 <p className="text-midnight/60 leading-relaxed">
